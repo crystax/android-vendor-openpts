@@ -105,6 +105,10 @@
 /***********************************    Real Test   *****************************************/
 /********************************************************************************************/
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
+
 /* The overflow function is used to test the stack overflow */
 void * overflow(void * arg)
 {

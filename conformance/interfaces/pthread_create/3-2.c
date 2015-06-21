@@ -115,6 +115,10 @@
 
 sem_t semsync[2]; /* These semaphores will only be used in child process! */
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
+
 /* The overflow function is used to test the stack overflow */
 void * overflow(void * arg)
 {
