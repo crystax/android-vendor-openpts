@@ -65,12 +65,18 @@ int main()
 		exit(PTS_UNRESOLVED);
 	}
 
+    /* PTHREAD_SCOPE_SYSTEM doesn't work on Android, so temporarily disable this test.
+     * See https://tracker.crystax.net/issues/983 for details
+     */
+#if !__ANDROID__
   	rc = pthread_attr_setscope(&attr, SYSTEMSCOPE);
 	if( rc != 0) {
 		perror(ERROR_PREFIX "PTHREAD_SCOPE_SYSTEM is not supported");
 	} else {
   		verify_scope(&attr, SYSTEMSCOPE);
 	}
+#endif /* !__ANDROID__ */
+
   	rc = pthread_attr_setscope(&attr, PROCESSSCOPE);
 	if( rc != 0) {
 		perror(ERROR_PREFIX "PTHREAD_SCOPE_SYSTEM is not supported");
