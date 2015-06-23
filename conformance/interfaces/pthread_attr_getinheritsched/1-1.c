@@ -19,6 +19,17 @@
 #include <stdlib.h>
 #include "posixtest.h"
 
+#if __ANDROID__
+
+/* Android don't support POSIX REALTIME THREADS */
+
+int main()
+{
+    return 0;
+}
+
+#else /* !__ANDROID__ */
+
 #define TEST "1-1"
 #define FUNCTION "pthread_attr_getinheritsched"
 #define ERROR_PREFIX "unexpected error: " FUNCTION " " TEST ": "
@@ -86,6 +97,4 @@ int main()
 	return PTS_PASS;
 }
 
-
-
-
+#endif /* !__ANDROID__ */
