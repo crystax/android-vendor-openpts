@@ -17,6 +17,10 @@
  *       provided by nptl, which is developed by Ulrich Drepper.
  */
 
+#if __APPLE__
+#define _DARWIN_C_SOURCE
+#endif
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif 
@@ -38,8 +42,12 @@ size_t stack_size;
 
 void *thread_func()
 {
-	pthread_attr_t attr;
 	size_t ssize;
+
+#if __APPLE__
+	ssize = pthread_get_stacksize_np(pthread_self());
+#else
+	pthread_attr_t attr;
 	int rc;
 
         /* pthread_getattr_np is not POSIX Compliant API*/
@@ -51,6 +59,8 @@ void *thread_func()
 	}
 
 	pthread_attr_getstacksize(&attr, &ssize);
+#endif
+
 	if (ssize != stack_size)
 	{	
 		perror(ERROR_PREFIX "got the wrong stacksize or stackaddr");

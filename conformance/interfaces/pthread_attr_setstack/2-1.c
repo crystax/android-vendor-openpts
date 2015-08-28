@@ -17,9 +17,13 @@
  *       provided by nptl, which is developed by Ulrich Drepper.
  */
 
+#if __APPLE__
+#define _DARWIN_C_SOURCE
+#endif
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
-#endif 
+#endif
 #include <pthread.h>
 #include <limits.h>
 #include <stdio.h>
@@ -39,12 +43,17 @@ size_t stack_size;
 
 void *thread_func()
 {
-	pthread_attr_t attr;
 	void *saddr;
 	size_t ssize;
+
+#if __APPLE__
+	saddr = pthread_get_stackaddr_np(pthread_self());
+	ssize = pthread_get_stacksize_np(pthread_self());
+#else
+	pthread_attr_t attr;
 	int rc;
 
-        /* pthread_getattr_np is not POSIX Compliant API*/
+	/* pthread_getattr_np is not POSIX Compliant API*/
 	rc = pthread_getattr_np(pthread_self(), &attr);
 	if (rc != 0)
     	{
@@ -53,9 +62,16 @@ void *thread_func()
 	}
 
 	pthread_attr_getstack(&attr, &saddr, &ssize);
-	if (ssize != stack_size || saddr != stack_addr)
+#endif
+
+	if (ssize != stack_size
+#if !__APPLE__
+			|| saddr != stack_addr
+#endif
+			)
 	{	
 		perror(ERROR_PREFIX "got the wrong stacksize or stackaddr");
+		fprintf(stderr, "ssize=%zu, stack_size=%zu, saddr=%p, stack_addr=%p\n", ssize, stack_size, saddr, stack_addr);
 		exit(PTS_FAIL);
 	}	
 	/* printf("saddr = %p, ssize = %u\n", saddr, ssize); */

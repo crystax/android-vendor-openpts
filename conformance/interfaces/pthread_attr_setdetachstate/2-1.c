@@ -23,6 +23,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 #include "posixtest.h"
 
 void *a_thread_func()
@@ -63,17 +64,25 @@ int main()
 	 * test fails as well. */
 	ret_val=pthread_join(new_th, NULL);
 
-	if(ret_val != EINVAL)
+	if(ret_val != EINVAL
+#if __APPLE__
+		&& ret_val != ESRCH
+#endif
+			)
 	{
-		printf("Test FAILED\n");
+		printf("Test FAILED (1)\n");
 		return PTS_FAIL;	
 	}
 	
 	ret_val=pthread_detach(new_th);
 
-	if(ret_val != EINVAL)
+	if(ret_val != EINVAL
+#if __APPLE__
+		&& ret_val != ESRCH
+#endif
+			)
 	{
-		printf("Test FAILED\n");
+		printf("Test FAILED (2)\n");
 		return PTS_FAIL;	
 	}
 
