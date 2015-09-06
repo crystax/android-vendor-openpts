@@ -64,11 +64,7 @@ int main()
 	 * test fails as well. */
 	ret_val=pthread_join(new_th, NULL);
 
-	if(ret_val != EINVAL
-#if __APPLE__
-		&& ret_val != ESRCH
-#endif
-			)
+	if(ret_val != EINVAL && ret_val != ESRCH)
 	{
 		printf("Test FAILED (1)\n");
 		return PTS_FAIL;	
@@ -76,11 +72,7 @@ int main()
 	
 	ret_val=pthread_detach(new_th);
 
-	if(ret_val != EINVAL
-#if __APPLE__
-		&& ret_val != ESRCH
-#endif
-			)
+	if(ret_val != EINVAL && ret_val != ESRCH)
 	{
 		printf("Test FAILED (2)\n");
 		return PTS_FAIL;	
