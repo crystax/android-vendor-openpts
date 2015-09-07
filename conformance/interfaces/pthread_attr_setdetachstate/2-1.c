@@ -66,7 +66,7 @@ int main()
 
 	if(ret_val != EINVAL && ret_val != ESRCH)
 	{
-		printf("Test FAILED (1)\n");
+		printf("Test FAILED (1): %s\n", strerror(ret_val));
 		return PTS_FAIL;	
 	}
 	
@@ -74,7 +74,7 @@ int main()
 
 	if(ret_val != EINVAL && ret_val != ESRCH)
 	{
-		printf("Test FAILED (2)\n");
+		printf("Test FAILED (2): %s\n", strerror(ret_val));
 		return PTS_FAIL;	
 	}
 
