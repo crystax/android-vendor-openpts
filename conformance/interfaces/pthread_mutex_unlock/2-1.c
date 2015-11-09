@@ -27,6 +27,7 @@
 
 #include <pthread.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include "posixtest.h"
 
@@ -45,8 +46,13 @@ int main()
 
   	/* Create threads */
   	fprintf(stderr,"Creating %d threads\n", THREAD_NUM);
-  	for (i=0; i<THREAD_NUM; ++i)
-    		rc = pthread_create(&threads[i], NULL, func, NULL);
+  	for (i=0; i<THREAD_NUM; ++i) {
+        rc = pthread_create(&threads[i], NULL, func, NULL);
+        if (rc != 0) {
+            fprintf(stderr, "pthread_create() error: %s\n", strerror(rc));
+            return PTS_FAIL;
+        }
+    }
 
 	/* Wait to join all threads */
   	for (i=0; i<THREAD_NUM; ++i)

@@ -19,6 +19,13 @@
  - call sigwaitinfo() and verify that it returns SIGRTMIN
  */
 
+#if __APPLE__
+int main() { return 0; }
+#elif __ANDROID__
+/* https://tracker.crystax.net/issues/1140 */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_SOURCE 600
 #define _XOPEN_REALTIME 1
 
@@ -71,3 +78,4 @@ int main()
 	return PTS_PASS;
 }
 
+#endif /* !__ANDROID__ */

@@ -11,6 +11,11 @@
  * Test that the values that can be returned by sched_getscheduler() are 
  * defined in the sched.h header
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <sched.h>
 #include <errno.h>
@@ -75,4 +80,4 @@ int main(int argc, char **argv)
 	return PTS_UNRESOLVED;	
 }
 
-
+#endif /* !__APPLE__ */

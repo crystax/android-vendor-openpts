@@ -25,6 +25,9 @@
 
 */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
 
 /* We are testing conformance to IEEE Std 1003.1, 2003 Edition */
 #define _POSIX_C_SOURCE 200112L
@@ -184,7 +187,7 @@ void * test( void * arg )
 	sigset_t set;
 	int i, j=0;
 	int signals[] = { SIGBUS, SIGKILL, SIGABRT, SIGCHLD, SIGHUP };
-#define NSIG (sizeof(signals)/sizeof(int))
+#define NUMSIG (sizeof(signals)/sizeof(int))
 	int operation[] = {SIG_SETMASK, SIG_BLOCK, SIG_UNBLOCK};
 
 	ret = sigemptyset( &set );
@@ -210,10 +213,10 @@ void * test( void * arg )
 		for ( i = 0; i < 3; i++ )
 		{
 			j++;
-			j %= 2 * NSIG;
+			j %= 2 * NUMSIG;
 
-			if ( j >= NSIG )
-				ret = sigdelset( &set, signals[ j - NSIG ] );
+			if ( j >= NUMSIG )
+				ret = sigdelset( &set, signals[ j - NUMSIG ] );
 			else
 				ret = sigaddset( &set, signals[ j ] );
 
@@ -369,3 +372,4 @@ int main ( int argc, char * argv[] )
 	PASSED;
 }
 
+#endif /* !__APPLE__ */

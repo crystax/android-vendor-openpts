@@ -11,6 +11,11 @@
  * Test that the scheduling policy and scheduling parameters are set for
  * the calling process when pid == 0.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <errno.h>
@@ -61,3 +66,5 @@ int main(){
 	perror("Unknow error");
 	return PTS_FAIL;
 }
+
+#endif /* !__APPLE__ */

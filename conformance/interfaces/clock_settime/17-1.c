@@ -16,6 +16,10 @@
 #include <errno.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define TESTTIME 1037128358
 
 #define BOGUSCLOCKID 9999
@@ -42,3 +46,5 @@ int main(int argc, char *argv[])
 	printf("This test should not be executed.\n");
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

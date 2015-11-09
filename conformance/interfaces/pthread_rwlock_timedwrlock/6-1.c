@@ -26,6 +26,10 @@
  *
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 #include <pthread.h>
 #include <stdio.h>
@@ -212,4 +216,4 @@ int main()
 	return PTS_PASS;	
 }
 
-
+#endif /* !__APPLE__ */

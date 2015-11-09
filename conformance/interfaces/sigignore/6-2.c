@@ -11,6 +11,11 @@
    to be ignored.
  */
 
+#if __ANDROID__
+/* https://tracker.crystax.net/issues/1136 */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <stdio.h>
@@ -34,3 +39,5 @@ int main()
 	printf("sigignore did not return -1\n");
 	return PTS_FAIL;
 }
+
+#endif /* !__ANDROID__ */

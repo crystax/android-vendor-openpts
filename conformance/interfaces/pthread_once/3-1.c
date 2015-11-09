@@ -25,8 +25,14 @@
 #include <unistd.h>
 #include "posixtest.h"
 
+#if __ANDROID__
+
+int main() { return 0; }
+
+#else /* !__ANDROID__ */
+
 /* Global pthread_once_t object */
-pthread_once_t once_control;
+pthread_once_t once_control = PTHREAD_ONCE_INIT;
 
 /* Keeps track of how many times the init function has been called. */
 int init_flag;
@@ -68,7 +74,6 @@ void *an_init_func2()
 int main()
 {
 	pthread_t new_th;
-	once_control = PTHREAD_ONCE_INIT;
 	init_flag=0;
 	
 	/* Create a thread that will execute the first call to pthread_once() */
@@ -118,4 +123,4 @@ int main()
 	return PTS_PASS;
 }
 
-
+#endif /* !__ANDROID__ */

@@ -19,6 +19,10 @@
   * EPERM. It is implementation defined.
   */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 #include <stdio.h>
 #include <sched.h>
@@ -68,12 +72,14 @@ int main(int argc, char **argv)
 	/* We assume process Number 1 is created by root */
 	/* and can only be accessed by root */ 
 	/* This test should be run under standard user permissions */
-	if (getuid() == 0) {
-                if (set_nonroot() != 0) {
+#if !__ANDROID__
+	if (geteuid() == 0) {
+        if (set_nonroot() != 0) {
 			printf("Cannot run this test as non-root user\n");	
 			return PTS_UNTESTED;
 		}
 	}
+#endif /* !__ANDROID__ */
 
 	result = sched_getparam( 1, &param);
 	
@@ -83,7 +89,11 @@ int main(int argc, char **argv)
 	}
 	if(result == 0) {
 		printf("The function sched_getparam has successed.\n");
-		return PTS_FAIL;
+#if __gnu_linux__
+        return PTS_PASS;
+#else
+		return geteuid() == 0 ? PTS_PASS : PTS_FAIL;
+#endif
 	}
 	if(errno != EPERM ) {
 		perror("errno is not EPERM: The system allows a non-root" 
@@ -95,4 +105,4 @@ int main(int argc, char **argv)
 	}        
 }
 
-
+#endif /* !__APPLE__ */

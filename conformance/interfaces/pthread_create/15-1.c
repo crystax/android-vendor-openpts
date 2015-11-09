@@ -26,8 +26,11 @@
  * -> Check that the new thread does not use the same stack.
 
  */
- 
- 
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
  /* We are testing conformance to IEEE Std 1003.1, 2003 Edition */
  #define _POSIX_C_SOURCE 200112L
  
@@ -153,4 +156,4 @@ void * threaded(void * arg)
 	return arg;
 }
 
-
+#endif /* !__APPLE__ */

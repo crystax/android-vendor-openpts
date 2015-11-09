@@ -12,6 +12,10 @@
  * specified in the sched_param structure pointed to by param.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <signal.h>
@@ -116,3 +120,5 @@ int main(){
 	kill(child_pid, SIGUSR1);
 	return PTS_FAIL;
 }
+
+#endif /* !__APPLE__ */

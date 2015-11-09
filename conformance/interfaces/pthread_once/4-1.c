@@ -14,4 +14,7 @@
 
 pthread_once_t dummy = PTHREAD_ONCE_INIT;
 
-
+int main()
+{
+    return 0;
+}

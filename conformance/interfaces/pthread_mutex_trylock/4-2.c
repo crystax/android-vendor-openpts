@@ -161,7 +161,7 @@ int main(int argc, char * argv[])
 	output_init();
 	
 	/* Initialize the timeout */
-	alarm(30);
+	alarm(60);
 	
 	/* Test system abilities */
 	pshared = sysconf(_SC_THREAD_PROCESS_SHARED);
@@ -199,7 +199,11 @@ int main(int argc, char * argv[])
 	else
 	{
 		/* We will place the test data in a mmaped file */
+#if __ANDROID__
+        char filename[] = "/data/local/tmp/mutex_trylock_4-2-XXXXXX";
+#else
 		char filename[] = "/tmp/mutex_trylock_4-2-XXXXXX";
+#endif
 		size_t sz;
 		void * mmaped;
 		int fd;

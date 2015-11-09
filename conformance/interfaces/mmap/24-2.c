@@ -16,6 +16,11 @@
  * 3. Should get ENOMEM. 
  */
 
+#if __ANDROID__
+/* https://tracker.crystax.net/issues/1132 */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_SOURCE 600
 #include <pthread.h>
 #include <stdio.h>
@@ -74,7 +79,7 @@ int main()
 		printf(TNAME " Error at getrlimit(): %s\n", strerror(errno));
 		return PTS_UNRESOLVED;
   }
-  printf("available memory: %lu\n", rlim.rlim_cur); 
+  printf("available memory: %llu\n", (unsigned long long)rlim.rlim_cur); 
  
   /* First mmap, just to get a legal addr for second mmap */ 
   fd = shm_fd;	
@@ -108,7 +113,11 @@ int main()
   printf("addr: %lx, len: %lx\n", (unsigned long)addr, 
 		(unsigned long)len); 
   pa = mmap (addr, len, prot, flag, fd, off);
+#if __APPLE__
+  if (pa == MAP_FAILED && errno == EINVAL)
+#else
   if (pa == MAP_FAILED && errno == ENOMEM)
+#endif
   {
     printf ("Test Pass: " TNAME " Get ENOMEM: %s\n", 
             strerror(errno));    
@@ -123,3 +132,5 @@ int main()
   printf ("Test Fail: Did not get ENOMEM as expected\n");
   return PTS_FAIL;
 }
+
+#endif /* !__ANDROID__ */

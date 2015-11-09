@@ -12,6 +12,11 @@
  * member is not within the inclusive priority range for the current
  * scheduling policy.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include "posixtest.h"
@@ -58,3 +63,5 @@ int main(){
 	}
 	
 }
+
+#endif /* !__APPLE__ */

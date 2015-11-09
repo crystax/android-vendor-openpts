@@ -53,6 +53,12 @@
  #include <stdio.h>
  #include <stdarg.h>
  #include <stdlib.h>
+
+#if __ANDROID__ || __APPLE__
+
+int main() { return 0; }
+
+#else /* !__ANDROID__ */
  
 /********************************************************************************************/
 /******************************   Test framework   *****************************************/
@@ -302,3 +308,5 @@ int main (int argc, char * argv[])
 	#endif	
 	PASSED;
 }
+
+#endif /* !__ANDROID__ */

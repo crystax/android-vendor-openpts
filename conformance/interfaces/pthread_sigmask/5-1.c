@@ -29,6 +29,10 @@ that SIG_SETMASK removed the old signal from the set.
    unexpected function failure.
 */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
@@ -161,3 +165,4 @@ int main()
 	return PTS_PASS;
 }
 
+#endif /* !__APPLE__ */

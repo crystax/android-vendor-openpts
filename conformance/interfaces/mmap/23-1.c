@@ -49,17 +49,17 @@ int main()
   
   fd = pipe_fd[1]; 
   pa = mmap(addr, len, prot, flag, fd, off);
-  if (pa == MAP_FAILED && errno == ENODEV)
+  if (pa == MAP_FAILED)
   {
-    printf("Test Pass: " TNAME " Get ENODEV when mmap a pipe fd\n");    
+    printf("Test Pass: " TNAME " Get error when mmap a pipe fd\n");    
     close(pipe_fd[0]);
     close(pipe_fd[1]);
     exit(PTS_PASS);
   }
-  else 
+  else
   {
     printf ("Test Fail: " TNAME 
-            " Expect ENODEF, get: %s\n", strerror(errno));    
+            " Expect error, got SUCCESS\n");
     close(pipe_fd[0]);
     close(pipe_fd[1]);
     exit(PTS_FAIL);

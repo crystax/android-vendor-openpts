@@ -28,6 +28,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 #include "posixtest.h"
  
 #define TNAME "mmap/11-2.c"
@@ -59,6 +60,9 @@ int main()
   char *ch = NULL;
   struct sigaction sa;
   
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
   page_size = sysconf(_SC_PAGE_SIZE);
   
   /* Size of the file to be mapped */
@@ -72,7 +76,7 @@ int main()
   sigaction(SIGBUS, &sa, NULL);
 
   /* Create tmp file */
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_11_2_%d",
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_11_2_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,

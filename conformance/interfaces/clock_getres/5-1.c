@@ -11,6 +11,10 @@
 #include <time.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define INVALIDCLOCKID 99999
 
 int main(int argc, char *argv[])
@@ -28,3 +32,5 @@ int main(int argc, char *argv[])
 	printf("This code should not be executed\n");
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

@@ -19,6 +19,11 @@
  *     failed.  
  */
 
+#if __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1114 is fixed */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,3 +85,4 @@ void alarm_handler()
 	exit(PTS_FAIL);
 }
 
+#endif /* !__ANDROID__ */

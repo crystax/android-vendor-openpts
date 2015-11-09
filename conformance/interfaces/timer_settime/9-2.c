@@ -21,6 +21,10 @@
  * will be used.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <time.h>
 #include <signal.h>
 #include <stdio.h>
@@ -154,3 +158,5 @@ int main(int argc, char *argv[])
 		return PTS_PASS;
 	}
 }
+
+#endif /* !__APPLE__ */

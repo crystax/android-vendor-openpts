@@ -127,8 +127,6 @@ void output( char * string, ... )
 {
 	va_list ap;
 #ifndef PLOT_OUTPUT
-	char *ts = "[??:??:??]";
-
 	struct tm * now;
 	time_t nw;
 #endif
@@ -138,7 +136,7 @@ void output( char * string, ... )
 	now = localtime( &nw );
 
 	if ( now == NULL )
-		printf( ts );
+		printf( "[??:??:??]" );
 	else
 		printf( "[%2.2d:%2.2d:%2.2d]", now->tm_hour, now->tm_min, now->tm_sec );
 

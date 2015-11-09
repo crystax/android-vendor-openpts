@@ -18,8 +18,8 @@
 
 #define NUMSTOPS 10
 
-int child_stopped = 0;
-int waiting = 1;
+volatile int child_stopped = 0;
+volatile int waiting = 1;
 
 void handler(int signo, siginfo_t *info, void *context) 
 {
@@ -36,6 +36,9 @@ int main()
 	pid_t pid;
 	struct sigaction act;
 	struct timeval tv;
+
+    setbuf(stdout, NULL);
+    setbuf(stderr, NULL);
 
 	act.sa_sigaction = handler;
 	act.sa_flags = SA_SIGINFO;
@@ -77,6 +80,10 @@ int main()
 
 			printf("--> Sending SIGCONT\n");
 			kill(pid, SIGCONT);
+
+			tv.tv_sec = 1;
+			tv.tv_usec = 0;
+			select(0, NULL, NULL, NULL, &tv);
 		}
 		
 		/* POSIX specifies default action to be abnormal termination */
@@ -89,7 +96,7 @@ int main()
 		return 0;
 	}
 
-	printf("Test FAILED\n");
+	printf("Test FAILED: child_stopped=%d\n", child_stopped);
 	return -1;
 }
 

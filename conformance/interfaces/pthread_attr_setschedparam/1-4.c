@@ -16,10 +16,23 @@
  */
 
 #include <pthread.h>
+#include <unistd.h>
+#include <errno.h>
 #include <stdio.h>
 #include <sys/time.h>
 #include <stdlib.h>
 #include "posixtest.h"
+
+#if __ANDROID__
+
+/* Android don't support POSIX REALTIME THREADS */
+
+int main()
+{
+    return 0;
+}
+
+#else /* !__ANDROID__ */
 
 #define TEST "3-2"
 #define AREA "scheduler"
@@ -90,6 +103,8 @@ int main()
 	/* Create the thread with the attr */
 	rc = pthread_create(&thread_id, &attr, thread, NULL);
 	if(rc != 0) {
+        if (geteuid() != 0 && rc == EPERM)
+            exit(PTS_PASS);
 		printf(ERROR_PREFIX "pthread_create\n");
 		exit(PTS_UNRESOLVED);
 	}
@@ -114,3 +129,5 @@ int main()
 	printf("Test PASS\n");
 	exit(PTS_PASS);
 }
+
+#endif /* !__ANDROID__ */

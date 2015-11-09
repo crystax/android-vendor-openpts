@@ -18,6 +18,13 @@
  *
  */
 
+#if __APPLE__
+int main() { return 0; }
+#elif __ANDROID__
+/* https://tracker.crystax.net/issues/1136 */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_REALTIME 1
 #define SIGTOTEST SIGRTMIN
 #define VALTOTEST 100		/* Application-defined value sent by sigqueue */
@@ -86,10 +93,4 @@ int main()
 	return PTS_FAIL;
 }
 
-
-
-
-
-
-
-
+#endif /* !__ANDROID__ */

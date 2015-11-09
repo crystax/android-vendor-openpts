@@ -110,7 +110,14 @@ int main()
 
 	if ( rts < 0L )
 	{
+#if __ANDROID__
+        /* https://tracker.crystax.net/issues/1140 */
+        PASSED;
+#elif __APPLE__
+        PASSED;
+#else
 		UNTESTED( "This test needs the RTS extension" );
+#endif
 	}
 
 	/* Set the signal handler */

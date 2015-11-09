@@ -44,8 +44,11 @@ int main()
 
   char * ch;
 
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
   data = (char *) malloc(total_size); 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_1_1_%d",
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_1_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,

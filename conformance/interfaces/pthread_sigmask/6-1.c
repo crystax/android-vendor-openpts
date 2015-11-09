@@ -27,6 +27,10 @@
       unexpected function failure.
 */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
@@ -152,3 +156,4 @@ int main() {
         return PTS_PASS;
 }
 
+#endif /* !__APPLE__ */

@@ -61,6 +61,9 @@ int main()
 
   char *ch;
 
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
 #ifndef MAP_FIXED
   printf("MAP_FIXED does not defined\n");
   exit(PTS_UNRESOLVED);
@@ -73,9 +76,9 @@ int main()
   /* Size of the file */
   total_size = 2 * page_size;
 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_3_1_%d",
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_3_1_%d", tmpdir,
            getpid());
-  snprintf(tmpfname2, sizeof(tmpfname2), "/tmp/pts_mmap_3_1_2_%d",
+  snprintf(tmpfname2, sizeof(tmpfname2), "%s/pts_mmap_3_1_2_%d", tmpdir,
            getpid());
   data = (char *) malloc(total_size); 
   unlink(tmpfname);

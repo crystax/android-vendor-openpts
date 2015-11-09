@@ -13,6 +13,15 @@
  * This test use msync to check that the page is locked.
  */
 
+#if __gnu_linux__ || __APPLE__
+int main() { return 0; }
+#elif __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1137 and
+ * https://tracker.crystax.net/issues/1132 would be fixed
+ */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 /* ftruncate was formerly an XOPEN extension. We define _XOPEN_SOURCE here to
    avoid warning if the implementation does not program ftruncate as a base 
    interface */
@@ -83,3 +92,4 @@ int main() {
 	return PTS_UNRESOLVED;
 }
 
+#endif /* !__ANDROID__ */

@@ -25,11 +25,11 @@ int main () {
     /* current time */
     time_t t = time(NULL);
     struct tm* local_t = localtime(&t);
-    char text[20];
+    char text[256];
     int result;
 
     setlocale(LC_TIME, "");
-    strftime(text, 256, nl_langinfo (D_T_FMT), local_t);
+    strftime(text, sizeof(text), nl_langinfo (D_T_FMT), local_t);
     printf("STRING IS:   %s\n\n", text);
 
 

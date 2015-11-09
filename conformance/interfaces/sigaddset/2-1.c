@@ -14,11 +14,18 @@
  */
 #include <stdio.h>
 #include <signal.h>
+#include <string.h>
+#include <errno.h>
 #include "posixtest.h"
 
 int main()
 {
 	sigset_t signalset;
+
+    if (sigemptyset(&signalset) == -1) {
+        printf("sigemptyset() failed: %s\n", strerror(errno));
+        return PTS_FAIL;
+    }
 
 	if (sigaddset(&signalset, SIGALRM) == 0) {
 		if (sigismember(&signalset, SIGALRM) == 1) {

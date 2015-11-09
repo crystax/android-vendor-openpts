@@ -11,6 +11,11 @@
  * Test that sched_setparam() sets errno == ESRCH when no process can be found
  * corresponding to that specified by pid. 
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <errno.h>
@@ -63,3 +68,5 @@ int main(){
 		return PTS_FAIL;
 	}
 }
+
+#endif /* !__APPLE__ */

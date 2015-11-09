@@ -14,6 +14,10 @@
   * Note, the tv_nsec cannot be exactly 0 at the time of calling 
   * clock_gettime() since the thread has executed some time. */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 #include <unistd.h>
 #include <pthread.h>
@@ -63,4 +67,4 @@ int main()
 	return PTS_PASS;	
 }
 
-
+#endif /* !__APPLE__ */

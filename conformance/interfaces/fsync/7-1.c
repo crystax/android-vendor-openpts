@@ -39,9 +39,9 @@ int main()
     exit(PTS_UNRESOLVED);
   } 
 
-  if (fsync(fd[1]) == -1 && errno == EINVAL)
+  if (fsync(fd[1]) == -1 && (errno == EINVAL || errno == ENOTSUP))
   {
-    printf("Got EINVAL when fsync on pipe\n");    
+    printf("Got EINVAL or ENOTSUP when fsync on pipe\n");    
     printf("Test PASSED\n");    
     close(fd[0]);
     close(fd[1]);
@@ -49,7 +49,7 @@ int main()
   }
   else
   {
-    printf(TNAME " Test Fail: Expect EINVAL, get: %s\n", 
+    printf(TNAME " Test Fail: Expect EINVAL or ENOTSUP, get: %s\n", 
             strerror(errno));    
     close(fd[0]);
     close(fd[1]);

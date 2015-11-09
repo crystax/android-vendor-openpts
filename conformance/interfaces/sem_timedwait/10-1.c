@@ -12,6 +12,9 @@
  * 
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
 
 #define _XOPEN_SOURCE 600
 
@@ -85,3 +88,5 @@ int main() {
 		return PTS_FAIL;
 	}
 }
+
+#endif /* !__APPLE__ */

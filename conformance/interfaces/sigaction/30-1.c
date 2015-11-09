@@ -32,6 +32,10 @@
 * The test fails if the signals are not delivered in FIFO order.
 */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 /* We are testing conformance to IEEE Std 1003.1, 2003 Edition */
 #define _POSIX_C_SOURCE 200112L
 
@@ -219,3 +223,5 @@ int main()
 
 	PASSED;
 }
+
+#endif /* !__APPLE__ */

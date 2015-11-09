@@ -13,6 +13,11 @@
  * The test create a child process which exit immediately and call
  * sched_rr_get_interval with the pid of defunct child.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <sched.h>
 #include <errno.h>
@@ -66,4 +71,4 @@ int main(int argc, char **argv)
 	
 }
 
-
+#endif /* !__APPLE__ */

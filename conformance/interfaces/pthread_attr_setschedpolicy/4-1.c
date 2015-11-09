@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 #include "posixtest.h"
 
 #define TEST "4-1"
@@ -36,11 +37,16 @@ int main()
 		exit(PTS_UNRESOLVED);
 	}
 
-  	rc = pthread_attr_setschedpolicy(&attr, INVALIDPOLICY);
+    /* On Android, pthread_attr_setschedpolicy() always return 0 (success), no matter what parameters were passed.
+     * See https://tracker.crystax.net/issues/1112 for details
+     */
+#if !__ANDROID__
+	rc = pthread_attr_setschedpolicy(&attr, INVALIDPOLICY);
 	if ((rc != EINVAL)) {
-		printf(ERROR_PREFIX "pthread_attr_setinheritsched\n");
+		printf(ERROR_PREFIX "pthread_attr_setschedpolicy: rc=%d (%s)\n", rc, strerror(rc));
 		exit(PTS_FAIL);
 	}
+#endif /* !__ANDROID__ */
   	rc = pthread_attr_destroy(&attr);
 	if( rc != 0) {
 		printf(ERROR_PREFIX "pthread_attr_destroy\n");

@@ -16,6 +16,10 @@
  *        > 9000 seconds before the current time.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <time.h>
 #include <signal.h>
 #include <stdio.h>
@@ -50,6 +54,9 @@ int main(int argc, char *argv[])
 	struct timespec ts;
 	int flags = 0;
 	int i;
+
+    setbuf(stdout, NULL);
+    setbuf(stderr, NULL);
 
 	ev.sigev_notify = SIGEV_SIGNAL;
 	ev.sigev_signo = SIGTOTEST;
@@ -106,3 +113,5 @@ int main(int argc, char *argv[])
 	printf("This code should not be executed.\n");
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

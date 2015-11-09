@@ -17,6 +17,10 @@
  *   [First signal made it.  Second signal was the overrun.]
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <signal.h>
 #include <time.h>
 #include <unistd.h>
@@ -92,3 +96,5 @@ int main()
 	printf("UNRESOLVED:  This code should not be executed.\n");
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

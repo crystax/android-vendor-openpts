@@ -17,6 +17,12 @@
  *
  */
 
+#if __APPLE__
+
+int main() { return 0; }
+
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <time.h>
@@ -104,3 +110,5 @@ void *f1(void *parm)
   	pthread_exit(0);
   	return (void*)(0);
 }
+
+#endif /* !__APPLE__ */

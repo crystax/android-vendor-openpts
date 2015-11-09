@@ -11,6 +11,11 @@
  * Test that sched_getparam() function return the scheduling parameters of a 
  * process specified by pid in the sched_param structure pointed to by param.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <sched.h>
 #include <errno.h>
@@ -46,4 +51,4 @@ int main(int argc, char **argv)
         return PTS_UNRESOLVED;
 }
 
-
+#endif /* !__APPLE__ */

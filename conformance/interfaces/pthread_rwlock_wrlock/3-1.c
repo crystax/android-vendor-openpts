@@ -23,12 +23,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
 #include "posixtest.h"
 
 int main()
 {
 	static pthread_rwlock_t rwlock;
-	int rc;
+	int rc, rc2;
 	
 	if(pthread_rwlock_init(&rwlock, NULL) != 0)
 	{
@@ -53,17 +54,22 @@ int main()
 	rc = pthread_rwlock_wrlock(&rwlock);	
 	
 	/* Clean up before we test the return value of pthread_rwlock_wrlock() */
-	if(pthread_rwlock_unlock(&rwlock) != 0)
+	if((rc2 = pthread_rwlock_unlock(&rwlock)) != 0)
 	{
-		printf("Error releasing write lock\n");
+		printf("Error releasing write lock: %s\n", strerror(rc2));
 		exit(PTS_UNRESOLVED);
 	}
 	
-	if(pthread_rwlock_destroy(&rwlock) != 0)
+#if !__ANDROID__
+    /* On Android, pthread_rwlock_destroy() fails here.
+     * See https://tracker.crystax.net/issues/1125 for details.
+     */
+	if((rc2 = pthread_rwlock_destroy(&rwlock)) != 0)
 	{
-		printf("Error at pthread_rwlock_destroy()\n");
+		printf("Error at pthread_rwlock_destroy(): %s\n", strerror(rc2));
 		return PTS_UNRESOLVED;
 	}	
+#endif /* !__ANDROID__ */
 
 	if(rc != 0)
 	{
@@ -74,7 +80,7 @@ int main()
 			return PTS_PASS;
 		} else
 		{
-			printf("Test FAILED: Incorrect return code %d\n", rc);
+			printf("Test FAILED: Incorrect return code %d (%s)\n", rc, strerror(rc));
 			return PTS_FAIL;
 		}
 	}

@@ -20,6 +20,11 @@
  *   4. Call sched_setscheduler with the pid of defunct child.
  *   5. Check that the policy and priority have not changed.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <errno.h>
@@ -98,3 +103,5 @@ int main(){
 	}
 	return PTS_FAIL;
 }
+
+#endif /* !__APPLE__ */

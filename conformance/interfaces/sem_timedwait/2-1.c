@@ -10,6 +10,10 @@
  * will unlock the semaphore from another process.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <stdio.h>
@@ -79,3 +83,5 @@ int main()
 	}
 return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

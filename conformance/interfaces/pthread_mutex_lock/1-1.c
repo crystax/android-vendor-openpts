@@ -25,6 +25,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include "posixtest.h"
 
 #define    THREAD_NUM  	5
@@ -47,8 +48,13 @@ int main()
   
   	/* Create threads */
   	fprintf(stderr,"Creating %d threads\n", THREAD_NUM);
-  	for (i=0; i<THREAD_NUM; ++i)
-    		rc = pthread_create(&threads[i], &pta, f1, NULL);
+  	for (i=0; i<THREAD_NUM; ++i) {
+        rc = pthread_create(&threads[i], &pta, f1, NULL);
+        if (rc != 0) {
+            fprintf(stderr, "Error on pthread_create(): %s\n", strerror(rc));
+            return PTS_FAIL;
+        }
+    }
 
 	/* Wait to join all threads */
   	for (i=0; i<THREAD_NUM; ++i)

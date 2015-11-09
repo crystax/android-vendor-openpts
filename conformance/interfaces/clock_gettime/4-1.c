@@ -18,6 +18,10 @@
 #include <unistd.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define LARGENUMBER 900000
 void dosomething()
 {
@@ -88,3 +92,5 @@ int main(int argc, char *argv[])
 #endif
 
 }
+
+#endif /* !__APPLE__ */

@@ -9,6 +9,11 @@
  * it is interrupted by a signal.
  * If time remaining is within OKDELTA difference, the test is a pass.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <time.h>
 #include <signal.h>
@@ -107,3 +112,5 @@ int main(int argc, char *argv[])
 	}
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

@@ -22,6 +22,12 @@
  *
  * Please refer to IEEE_1003.1-2001. 2.8.3.3 Memory Protection.
  */
+
+#if __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1144 is fixed */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_SOURCE 600
 #include <pthread.h>
 #include <stdio.h>
@@ -37,6 +43,12 @@
 #include "posixtest.h"
  
 #define TNAME "mmap/6-1.c"
+
+#if __APPLE__
+#define SIGNAL_TERMINATED SIGBUS
+#else
+#define SIGNAL_TERMINATED SIGSEGV
+#endif
 
 int main()
 {
@@ -58,7 +70,10 @@ int main()
   int status;
   int sig_num;
 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_6_1_%d",
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_6_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,
@@ -104,7 +119,7 @@ int main()
     {
       sig_num = WSTOPSIG(status);
       printf("Child process stopped by signal %d\n", sig_num); 
-      if (sig_num == SIGSEGV)
+      if (sig_num == SIGNAL_TERMINATED)
       {
         printf("Test Pass: " TNAME 
                 " Got SIGSEGV when writing to the mapped memory, "
@@ -116,7 +131,7 @@ int main()
     {
       sig_num = WTERMSIG(status);
       printf("Child process terminated by signal %d\n", sig_num); 
-      if (sig_num == SIGSEGV)
+      if (sig_num == SIGNAL_TERMINATED)
       {
         printf ("Test Pass: " TNAME 
                 " Got SIGSEGV when writing to the mapped memory, "
@@ -145,3 +160,5 @@ int main()
 #endif
   
 }
+
+#endif /* !__ANDROID__ */

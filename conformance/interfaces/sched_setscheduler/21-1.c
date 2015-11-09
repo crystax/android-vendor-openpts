@@ -14,6 +14,11 @@
  * The test create a child process which exit immediately and call
  * sched_setscheduler with the pid of defunct child.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <errno.h>
@@ -60,3 +65,5 @@ int main(){
 		return PTS_FAIL;
 	}
 }
+
+#endif /* !__APPLE__ */

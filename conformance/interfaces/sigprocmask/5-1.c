@@ -57,10 +57,12 @@ int main()
 		return PTS_UNRESOLVED;
 	}
 
+#if !__APPLE__
 	if (sigismember(&pending_set, SIGABRT) == -1) {
 		perror("Unexpected error while attempting to use sigismember.\n");
 		return PTS_UNRESOLVED;
 	}
+#endif /* !__APPLE__ */
 
 	if (sigismember(&pending_set, SIGABRT) != 1) {
 		perror("FAIL: sigismember did not return 1\n");

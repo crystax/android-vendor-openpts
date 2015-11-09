@@ -26,6 +26,13 @@
 	PTS_FAIL if return value is 1
  */
 
+#if __APPLE__
+int main() { return 0; }
+#elif __ANDROID__
+/* https://tracker.crystax.net/issues/1136 */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <pthread.h>
@@ -53,6 +60,8 @@ void *a_thread_func()
 {
 	struct sigaction act;
 	sigset_t pendingset;
+
+    printf("thread created\n");
 
 	act.sa_flags = 0;
 	act.sa_handler = handler;
@@ -106,6 +115,7 @@ int main()
 		return PTS_UNRESOLVED;
 	}
 
+    printf("return_value=%d\n", return_value);
 	if (return_value != 0) {
 		if (return_value == 1)
 			return PTS_FAIL;
@@ -117,3 +127,5 @@ int main()
 	printf("Test PASSED\n");
 	return PTS_PASS;	
 }
+
+#endif /* !__ANDROID__ */

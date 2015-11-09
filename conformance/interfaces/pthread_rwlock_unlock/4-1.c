@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
 #include "posixtest.h"
 
 int main()
@@ -35,16 +36,16 @@ int main()
 	rc = pthread_rwlock_unlock(&rwlock);
 	if(rc != 0)
 	{
-		if(rc == EINVAL)
+		if(rc == EINVAL || rc == EPERM)
 		{
 			printf("Test PASSED\n");
 			return PTS_PASS;
 		}
 
-		printf("Test FAILED: Incorrect error code, expected 0 or EINVAL, got %d\n", rc);
+		printf("Test FAILED: Incorrect error code, expected 0 or EINVAL or EPERM, got %d (%s)\n", rc, strerror(rc));
 		return PTS_FAIL;
 	}
 	
-	printf("Test PASSED: Note*: Returned 0 instead of EINVAL, but standard specified _may_ fail.\n");
+	printf("Test PASSED: Note*: Returned 0 instead of EINVAL or EPERM, but standard specified _may_ fail.\n");
 	return PTS_PASS;
 }

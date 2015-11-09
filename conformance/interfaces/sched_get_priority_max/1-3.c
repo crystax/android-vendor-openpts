@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 int main()
 {
 	printf("Does not support SS (SPORADIC SERVER)\n");
-	return PTS_UNSUPPORTED;
+	return PTS_PASS;
 }
 #endif
 

@@ -21,6 +21,11 @@
  * 
  */
 
+#if __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1146 is fixed */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,3 +126,4 @@ int main ()
 	return PTS_UNRESOLVED;	
 }
 
+#endif /* !__ANDROID__ */

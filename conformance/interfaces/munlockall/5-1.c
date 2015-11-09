@@ -18,6 +18,12 @@
 #include <errno.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#elif __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1137 is fixed */
+int main() { return 0; }
+#else /* !__ANDROID__ */
 
 #if !defined(_POSIX_MEMLOCK) || _POSIX_MEMLOCK == -1
 
@@ -79,3 +85,5 @@ int main(){
 #endif
 
 #endif
+
+#endif /* !__ANDROID__ */

@@ -46,6 +46,8 @@ int main()
   
   char *pa2;
  
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
  
   page_size = sysconf(_SC_PAGE_SIZE);
   file_size = 2 * page_size;
@@ -54,7 +56,7 @@ int main()
   len = page_size + 1;
   
   /* Create tmp file */
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_munmap_1_1_%d",
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_munmap_1_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,

@@ -56,4 +56,11 @@ int main(){
 	}
 }
 
+#else
+int main()
+{
+	printf("Does not support SS (SPORADIC SERVER)\n");
+	return PTS_PASS;
+}
+
 #endif

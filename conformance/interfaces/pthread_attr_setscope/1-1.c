@@ -65,11 +65,13 @@ int main()
                 exit(PTS_UNRESOLVED);
         }
 
+#if !__ANDROID__
 	if (cscope != CONSCOPE) {
 		fprintf(stderr, ERROR_PREFIX "The contentionscope is not "
 		       "correct \n");
 		exit(PTS_FAIL);
-	}		
+	}
+#endif /* !__ANDROID__ */
 
 	rc = pthread_join(new_th, NULL);
 	if(rc != 0)

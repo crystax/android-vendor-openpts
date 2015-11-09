@@ -20,6 +20,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include "posixtest.h"
 
@@ -29,13 +30,17 @@ int main()
 	pthread_key_t key;
 	void* rc;
 
+#if !__APPLE__
+    memset(&key, 0, sizeof(key));
+
 	/* Verify that the value associated with "key" in a new thread is NULL */
 	rc = pthread_getspecific(key);
 	if(rc != NULL)
 	{
-		printf("Test FAILED\n");
+		printf("Test FAILED: pthread_getspecific() return non-NULL in a new thread\n");
 		return PTS_FAIL;
 	}
+#endif /* !__APPLE__ */
 
 	if(pthread_key_create(&key, NULL) != 0)
 	{
@@ -48,7 +53,7 @@ int main()
 		rc = pthread_getspecific(key);
 		if(rc != NULL)
 		{
-			printf("Test FAILED\n");
+			printf("Test FAILED: pthread_getspecific() return non-NULL value for newly created \"key\"\n");
 			return PTS_FAIL;
 		}
 		

@@ -39,6 +39,12 @@
  
 #define TNAME "mmap/6-3.c"
 
+#if __APPLE__
+#define SIGNAL_TERMINATED SIGBUS
+#else
+#define SIGNAL_TERMINATED SIGSEGV
+#endif
+
 int main()
 {
 
@@ -60,7 +66,10 @@ int main()
   int status;
   int sig_num;
 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_6_3_%d",
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_6_3_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,
@@ -107,7 +116,7 @@ int main()
     if (WIFSTOPPED(status))
     {
       sig_num = WSTOPSIG(status);
-      if (sig_num == SIGSEGV)
+      if (sig_num == SIGNAL_TERMINATED)
       {
         printf("Test Pass: " TNAME 
                 " Got SIGSEGV when writing the mapped memory, "
@@ -119,7 +128,7 @@ int main()
     if (WIFSIGNALED(status))
     {
       sig_num = WTERMSIG(status);
-      if (sig_num == SIGSEGV)
+      if (sig_num == SIGNAL_TERMINATED)
       {
         printf ("Test Pass: " TNAME 
                 " Got SIGSEGV when writing the mapped memory, "

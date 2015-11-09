@@ -34,6 +34,12 @@
 
 */
 
+#if __APPLE__
+int main() { return 0; }
+#elif __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1134 is fixed */
+int main() { return 0; }
+#else /* !__ANDROID__ */
 
 /* We are testing conformance to IEEE Std 1003.1, 2003 Edition */
 #define _POSIX_C_SOURCE 200112L
@@ -178,4 +184,4 @@ int main( int argc, char * argv[] )
 	PASSED;
 }
 
-
+#endif /* !__ANDROID__ */

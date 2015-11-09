@@ -77,7 +77,7 @@ scenarii[] =
 
         {
                 /* Unary tests */
-                /* 0*/	 CASE_POS(     0,     0,     0,     0,     0,     0,     0,     "default" )
+                /* 0*/	     CASE_POS(     0,     0,     0,     0,     0,     0,     0,     "default" )
                 /* 1*/	,    CASE_POS(     1,     0,     0,     0,     0,     0,     0,     "Explicit sched" )
                 /* 3*/	,    CASE_UNK(     0,     1,     0,     0,     0,     0,     0,     "FIFO Policy" )
                 /* 4*/	,    CASE_UNK(     0,     2,     0,     0,     0,     0,     0,     "RR Policy" )
@@ -150,6 +150,9 @@ void scenar_init()
 			UNRESOLVED( ret, "Failed to initialize a thread attribute object" );
 		}
 
+#if __ANDROID__
+        /* https://tracker.crystax.net/issues/1148 */
+#else /* !__ANDROID__ */
 		/* Sched related attributes */
 		if ( tps > 0 )     /* This routine is dependent on the Thread Execution Scheduling option */
 		{
@@ -174,6 +177,7 @@ void scenar_init()
 			output( "TPS unsupported => inheritsched parameter untouched\n" );
 
 #endif
+#endif /* !__ANDROID__ */
 
 		if ( tps > 0 )     /* This routine is dependent on the Thread Execution Scheduling option */
 		{
@@ -283,6 +287,11 @@ void scenar_init()
 
 #endif
 
+#if __APPLE__
+        /* Nothing */
+#elif __ANDROID__
+        /* https://tracker.crystax.net/issues/1149 */
+#else /* !__ANDROID__ */
 		/* Stack related attributes */
 		if ( ( tss > 0 ) && ( tsa > 0 ) )     /* This routine is dependent on the Thread Stack Address Attribute
 															                   and Thread Stack Size Attribute options */
@@ -320,6 +329,7 @@ void scenar_init()
 			output( "TSA or TSS unsupported => No alternative stack\n" );
 
 #endif
+#endif /* !__ANDROID__ */
 
 #ifndef WITHOUT_XOPEN
 		if ( scenarii[ i ].guard != 0 )

@@ -198,7 +198,11 @@ int main(int argc, char * argv[])
 	else
 	{
 		/* We will place the test data in a mmaped file */
+#if __ANDROID__
+        char filename[] = "/data/local/tmp/mutex_trylock_1-2-XXXXXX";
+#else
 		char filename[] = "/tmp/mutex_trylock_1-2-XXXXXX";
+#endif
 		size_t sz;
 		void * mmaped;
 		int fd;

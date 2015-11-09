@@ -45,6 +45,9 @@ int main()
 	struct sigaction act;
 	struct timeval tv;
 
+    setbuf(stdout, NULL);
+    setbuf(stderr, NULL);
+
 	act.sa_sigaction = handler;
 	act.sa_flags = SA_SIGINFO | SA_NOCLDSTOP;
 	sigemptyset(&act.sa_mask);

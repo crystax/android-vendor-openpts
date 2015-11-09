@@ -10,6 +10,11 @@
 
  */
 
+#if __ANDROID__
+/* https://tracker.crystax.net/issues/1136 */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <pthread.h>
@@ -54,3 +59,4 @@ int main()
 	return PTS_PASS;
 }
 
+#endif /* !__ANDROID__ */

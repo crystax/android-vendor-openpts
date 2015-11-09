@@ -10,6 +10,11 @@
  *
  * Test that sched_get_priority_max() returns -1 on failure.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <sched.h>
 #include <errno.h>
@@ -43,4 +48,4 @@ int main(int argc, char **argv)
         return PTS_UNRESOLVED;
 }
 
-
+#endif /* !__APPLE__ */

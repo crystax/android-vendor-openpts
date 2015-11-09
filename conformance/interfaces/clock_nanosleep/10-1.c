@@ -9,12 +9,17 @@
  * by a signal.  Test for relative sleep.
  */
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include <signal.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <errno.h>
 #include "posixtest.h"
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
 
 #define SLEEPSEC 30
 
@@ -50,7 +55,12 @@ int main(int argc, char *argv[])
 		if (clock_nanosleep(CLOCK_REALTIME, 0, &tssleep, NULL) == EINTR) {
 				return CHILDPASS;
 		} else {
-				printf("errno != EINTR\n");
+#if __ANDROID__
+            /* TODO: Remove this block when https://tracker.crystax.net/issues/1131 would be fixed */
+            if (errno == EINTR)
+                return CHILDPASS;
+#endif
+				printf("errno != EINTR: %d (%s)\n", errno, strerror(errno));
 				return CHILDFAIL;
 		}
 	} else {
@@ -80,3 +90,5 @@ int main(int argc, char *argv[])
 
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

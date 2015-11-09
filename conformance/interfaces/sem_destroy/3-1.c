@@ -11,6 +11,10 @@
  * upon which no threads are currently blocked.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sys/types.h>
 #include <stdio.h>
 #include <errno.h>
@@ -90,3 +94,4 @@ void * consumer(void *arg)
     return NULL;
 }
 
+#endif /* !__APPLE__ */

@@ -14,6 +14,11 @@
  * For invalid parameters, nanosleep should fail with -1 exit and 
  * errno set to EINVAL.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <time.h>
 #include <errno.h>
@@ -119,3 +124,5 @@ int main(int argc, char *argv[])
 	}
 	return PTS_PASS;
 }
+
+#endif /* !__APPLE__ */

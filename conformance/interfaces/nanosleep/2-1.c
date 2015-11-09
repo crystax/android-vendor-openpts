@@ -9,6 +9,11 @@
  * until _at least_ the time interval in rqtp passes.
  * Test for a variety of time intervals (in nsecs)
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <time.h>
 #include "posixtest.h"
@@ -74,3 +79,5 @@ int main(int argc, char *argv[])
 	printf("This code should not be executed.\n");
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

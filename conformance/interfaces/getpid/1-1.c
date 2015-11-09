@@ -81,7 +81,7 @@
 /********************************** Configuration ******************************************/
 /********************************************************************************************/
 #ifndef VERBOSE
-#define VERBOSE 1
+#define VERBOSE 2
 #endif
 
 /********************************************************************************************/
@@ -152,10 +152,13 @@ int main(int argc, char * argv[])
 	/* We need MF support for the process-cross testing */
 	if (mf > 0)
 	{
-		/* We will place the child pid in a mmaped file */
-		char filename[] = "/tmp/getpid-1-XXXXXX";
 		void * mmaped;
 		int fd;
+		/* We will place the child pid in a mmaped file */
+        char filename[256];
+        const char *tmpdir = getenv("TMPDIR");
+        if (!tmpdir) tmpdir = "/tmp";
+        snprintf(filename, sizeof(filename), "%s/getpid-1-XXXXXX", tmpdir);
 		
 		/* We now create the temp files */
 		fd = mkstemp(filename);

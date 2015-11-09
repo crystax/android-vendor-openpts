@@ -18,6 +18,11 @@
  *   2. Call sched_setscheduler with invalid args.
  *   3. Check that the policy and priority have not changed.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -122,3 +127,4 @@ int main(){
 	return result;
 }
 
+#endif /* !__APPLE__ */

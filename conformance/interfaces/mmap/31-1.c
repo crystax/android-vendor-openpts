@@ -51,8 +51,10 @@ int main()
 
   long page_size = sysconf(_SC_PAGE_SIZE);
 
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
   
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_31_1_%d",
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_31_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,
@@ -89,7 +91,7 @@ int main()
   printf("off: %lx, len: %lx\n", (unsigned long)off, 
 		(unsigned long)len); 
   pa = mmap(addr, len, prot, flag, fd, off);
-  if (pa == MAP_FAILED && errno == EOVERFLOW)
+  if (pa == MAP_FAILED && errno == ENOMEM)
   {
   	printf ("Test Pass: " TNAME " Error at mmap: %s\n", 
             strerror(errno));    
@@ -97,9 +99,9 @@ int main()
   }
  
   if (pa == MAP_FAILED)
-    perror("Test FAIL: expect EOVERFLOW but get other error");
+    perror("Test FAIL: expect ENOMEM but get other error");
   else  
-    printf ("Test FAIL : Expect EOVERFLOW but got no error\n");
+    printf ("Test FAIL : Expect ENOMEM but got no error\n");
   
   close (fd);
   munmap (pa, len);

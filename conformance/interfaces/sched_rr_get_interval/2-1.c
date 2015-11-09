@@ -10,6 +10,11 @@
  *
  * sched_rr_get_interval() returns 0 on success.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <sched.h>
 #include <errno.h>
@@ -59,4 +64,4 @@ int main(int argc, char **argv)
 	
 }
 
-
+#endif /* !__APPLE__ */

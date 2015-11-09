@@ -17,6 +17,11 @@
  * If no error occurs whith -1, the test will run sched_setscheduler with the
  * very improbable policy value INVALID_POLICY.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <errno.h>
@@ -66,3 +71,5 @@ int main(){
 
 
 }
+
+#endif /* !__APPLE__ */

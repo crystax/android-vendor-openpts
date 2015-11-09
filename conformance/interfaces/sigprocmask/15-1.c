@@ -19,6 +19,7 @@ int main()
 {
 
 	sigset_t set;
+    sigemptyset(&set);
 	sigaddset (&set, SIGABRT);
 
 	if (sigprocmask(SIG_SETMASK, &set, NULL) != 0) {

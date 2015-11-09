@@ -35,6 +35,10 @@
  * 	 is not supported.
  */
 
+#if __gnu_linux__
+int main() { return 0; }
+#else /* !__gnu_linux__ */
+
 #define _XOPEN_SOURCE 600
 #include <pthread.h>
 #include <stdio.h>
@@ -199,7 +203,7 @@ int main()
 		exit(PTS_UNRESOLVED);
 	}
 	
-	rd_thread_state = 1;
+	rd_thread_state = NOT_CREATED_THREAD;
 	priority = sched_get_priority_min(TRD_POLICY);
 	printf("main: create rd_thread, with priority: %d\n", priority);
 	if(pthread_create(&rd_thread, NULL, fn_rd, (void*)(long)priority) != 0)
@@ -212,7 +216,7 @@ int main()
 	cnt = 0;
 	do{
 		sleep(1);
-	}while (rd_thread_state !=EXITING_THREAD && cnt++ < 3); 
+	}while (rd_thread_state !=EXITING_THREAD && cnt++ < 3);
 	
 	if(rd_thread_state == EXITING_THREAD)
 	{
@@ -286,3 +290,5 @@ int main()
 	printf("Test PASSED\n");
 	return PTS_PASS;
 }
+
+#endif /* !__gnu_linux__ */

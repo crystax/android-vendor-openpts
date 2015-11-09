@@ -29,6 +29,9 @@
 
 int main()
 {
+#if __APPLE__
+    return 0;
+#else /* !__APPLE__ */
 	sigset_t newmask, pendingset;
 	int sig;
 
@@ -145,4 +148,5 @@ int main()
 	printf( "Test PASSED\n" );
 	return PTS_PASS;
 
+#endif /* !__APPLE__ */
 }

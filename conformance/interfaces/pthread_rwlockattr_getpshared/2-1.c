@@ -34,6 +34,12 @@
 #include <sys/wait.h>
 #include "posixtest.h"
 
+#if __ANDROID__
+
+int main() { return 0; }
+
+#else /* !__ANDROID__ */
+
 struct shmstruct{
 	pthread_rwlock_t rwl;
 	int data;
@@ -212,3 +218,5 @@ int main()
 		}
 	}
 }
+
+#endif /* !__ANDROID__ */

@@ -17,6 +17,10 @@
 
 #define TESTTIME 1037128358
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 int main(int argc, char *argv[])
 {
 #ifdef CLOCK_MONOTONIC
@@ -44,3 +48,5 @@ int main(int argc, char *argv[])
 #endif
 
 }
+
+#endif /* !__APPLE__ */

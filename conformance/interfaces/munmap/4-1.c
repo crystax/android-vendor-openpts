@@ -53,7 +53,10 @@ int main()
 
   char * ch;
 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_munmap_4_1_%d",
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_munmap_4_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,

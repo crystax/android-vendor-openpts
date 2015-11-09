@@ -26,6 +26,10 @@
  * 8.  Main thread unlocks 'rwlock'
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 /* Test with CLOCK_REALTIME */
 
 #define _XOPEN_SOURCE 600
@@ -318,3 +322,5 @@ int main()
 	printf("Test PASSED\n");
 	return PTS_PASS;
 }
+
+#endif /* !__APPLE__ */

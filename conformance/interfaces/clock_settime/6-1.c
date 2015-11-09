@@ -10,6 +10,11 @@
  *
  * The date chosen is Nov 12, 2002 ~11:13am.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <time.h>
 #include "posixtest.h"
@@ -38,3 +43,5 @@ int main(int argc, char *argv[])
 #endif
 
 }
+
+#endif /* !__APPLE__ */

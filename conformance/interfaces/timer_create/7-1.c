@@ -12,6 +12,10 @@
  * Same test as 1-1.c with CLOCK_MONOTONIC.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <time.h>
 #include <signal.h>
 #include <stdio.h>
@@ -99,3 +103,5 @@ int main(int argc, char *argv[])
 #endif
 
 }
+
+#endif /* !__APPLE__ */

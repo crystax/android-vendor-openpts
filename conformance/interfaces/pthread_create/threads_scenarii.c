@@ -174,6 +174,9 @@ void scenar_init()
 		output("Detach state was set sucessfully\n");
 		#endif
 		
+#if __ANDROID__
+        /* https://tracker.crystax.net/issues/1148 */
+#else /* !__ANDROID__ */
 		/* Sched related attributes */
 		if (tps>0) /* This routine is dependent on the Thread Execution Scheduling option */
 		{
@@ -190,6 +193,7 @@ void scenar_init()
 		else
 			output("TPS unsupported => inheritsched parameter untouched\n");
 		#endif
+#endif /* !__ANDROID__ */
 		
 		if (tps>0) /* This routine is dependent on the Thread Execution Scheduling option */
 		{
@@ -268,6 +272,9 @@ void scenar_init()
 			output("TPS unsupported => sched contension scope parameter untouched\n");
 		#endif
 		
+#if __ANDROID__
+        /* https://tracker.crystax.net/issues/1149 */
+#else /* !__ANDROID__ */
 		/* Stack related attributes */
 		if ((tss>0) && (tsa>0)) /* This routine is dependent on the Thread Stack Address Attribute 
 			                   and Thread Stack Size Attribute options */
@@ -292,6 +299,7 @@ void scenar_init()
 		else
 			output("TSA or TSS unsupported => No alternative stack\n");
 		#endif
+#endif /* !__ANDROID__ */
 		
 		#ifndef WITHOUT_XOPEN
 		if (scenarii[i].guard != 0)

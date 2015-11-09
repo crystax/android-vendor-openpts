@@ -137,7 +137,7 @@ int main( int argc, char * argv[] )
 
 	for ( i = 0; i < NTHREADS; i++ )
 	{
-		ret = pthread_create( &th[ i ], NULL, threaded, &myctl );
+		ret = pthread_create( &th[ i ], NULL, threaded, (void*)&myctl );
 
 		if ( ret != 0 )
 		{

@@ -30,7 +30,14 @@
 #include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
 #include "posixtest.h"
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
 
 int handler_called = 0;
 
@@ -92,7 +99,7 @@ void *a_thread_func()
 	}
 
 	if ((sigismember(&pending_set, SIGABRT) != 1) | (sigismember(&pending_set, SIGALRM) != 1)) {
-		perror("FAIL: sigismember did not return 1\n");
+		perror("FAIL: sigismember did not return 1");
 		pthread_exit((void*)-1);
 	}
 
@@ -132,3 +139,5 @@ int main() {
 	}
 	return PTS_PASS;
 }
+
+#endif /* !__APPLE__ */

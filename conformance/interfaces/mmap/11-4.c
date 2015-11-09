@@ -26,6 +26,10 @@
  *    read the byte from the position modified at step 1-c and check.
  */
 
+#if __gnu_linux__ || __ANDROID__
+int main() { return 0; }
+#else /* !__gnu_linux__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <pthread.h>
@@ -60,6 +64,9 @@ int main()
   pid_t child;
   char *ch = NULL, *ch_2 = NULL;
   int exit_val;
+
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
  
   page_size = sysconf(_SC_PAGE_SIZE);
   
@@ -69,8 +76,8 @@ int main()
   /* mmap will create a partial page */
   len = page_size / 2; 
 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_11_5_%d",
-             getpid());
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_11_5_%d",
+             tmpdir, getpid());
   child = fork();
   if (child == 0)
   {
@@ -151,3 +158,5 @@ int main()
   printf("Test Passed\n");
   return PTS_PASS;
 }
+
+#endif /* !__gnu_linux__ */

@@ -30,6 +30,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 #include "posixtest.h"
  
 #define TNAME "munmap/1-2.c"
@@ -60,6 +61,9 @@ int main()
  
   struct sigaction sa;
 
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
   sigfillset(&sa.sa_mask);
   sa.sa_handler = sigsegv_handler;
   sigaction(SIGSEGV, &sa, NULL);  
@@ -71,7 +75,7 @@ int main()
   len = page_size + 1;
   
   /* Create tmp file */
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_munmap_1_1_%d",
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_munmap_1_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,

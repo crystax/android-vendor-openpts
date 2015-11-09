@@ -58,6 +58,13 @@
  #include <unistd.h>
  #include <stdarg.h>
  #include <stdlib.h>
+
+#if __ANDROID__ || __APPLE__
+
+/* Android don't support thread cancellation yet */
+int main() { return 0; }
+
+#else /* !__ANDROID__ */
  
 /********************************************************************************************/
 /******************************   Test framework   *****************************************/
@@ -331,3 +338,5 @@ int main(int argc, char *argv[])
 		
 	PASSED;
 } 
+
+#endif /* !__ANDROID__ */

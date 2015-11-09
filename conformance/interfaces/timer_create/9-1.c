@@ -17,6 +17,10 @@
  * will be used.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <time.h>
 #include <signal.h>
 #include <stdio.h>
@@ -28,6 +32,12 @@
 #define TIMERSEC 2
 #define SLEEPDELTA 3
 #define ACCEPTABLEDELTA 1
+
+#if __ANDROID__
+#define SLEEP "/system/bin/sleep"
+#else
+#define SLEEP "/bin/sleep"
+#endif
 
 void handler(int signo)
 {
@@ -71,10 +81,12 @@ int main(int argc, char *argv[])
 		return PTS_UNRESOLVED;
 	}
 
-	if (execl("/bin/sleep", "sleep", "3", NULL) == -1) {
+	if (execl(SLEEP, "sleep", "3", NULL) == -1) {
 		printf("Test FAILED\n");
 		return PTS_FAIL;
 	}
 
 	return PTS_FAIL;
 }
+
+#endif /* !__APPLE__ */

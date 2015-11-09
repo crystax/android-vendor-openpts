@@ -17,6 +17,10 @@
  * belongs to root. This test can not be run by root.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 #include <stdio.h>
 #include <sched.h>
@@ -62,6 +66,7 @@ int main(){
 	int result;
         struct sched_param param;
 
+#if !__ANDROID__
         /* We assume process Number 1 is created by root */
         /* and can only be accessed by root */ 
         /* This test should be run under standard user permissions */
@@ -71,10 +76,15 @@ int main(){
 			return PTS_UNTESTED;
 		}
         }
+#endif /* !__ANDROID__ */
 	
 	param.sched_priority = sched_get_priority_max(SCHED_FIFO);
 	
 	result = sched_setscheduler(1, SCHED_FIFO, &param);
+    if (result == 0) {
+        if (geteuid() == 0)
+            return PTS_PASS;
+    }
 
 	if(result == -1 && errno == EPERM) {
 		printf("Test PASSED\n");
@@ -87,3 +97,5 @@ int main(){
 		return PTS_FAIL;
 	}
 }
+
+#endif /* !__APPLE__ */

@@ -11,6 +11,11 @@
  * Test that sched_getscheduler() returns the scheduling policy of the
  * specified process on success.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <stdio.h>
 #include <sched.h>
 #include <errno.h>
@@ -37,4 +42,4 @@ int main(int argc, char **argv)
 
 }
 
-
+#endif /* !__APPLE__ */

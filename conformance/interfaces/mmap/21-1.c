@@ -11,6 +11,10 @@
  * 
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <pthread.h>
@@ -41,10 +45,13 @@ int main()
   off_t off = 0;
   int prot;
 
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
   total_size = 1024;
   size = total_size;
   
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_21_1_%d",
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_21_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,
@@ -83,3 +90,5 @@ int main()
   printf ("Test FAIL\n");
   return PTS_FAIL;
 }
+
+#endif /* !__APPLE__ */

@@ -24,6 +24,13 @@
  *
  */
 
+#if __ANDROID__
+/* https://tracker.crystax.net/issues/1132 */
+int main() { return 0; }
+#elif __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 #include <pthread.h>
 #include <stdio.h>
@@ -139,3 +146,5 @@ int main()
   	exit(PTS_UNRESOLVED);
   }
 }
+
+#endif /* !__APPLE__ */

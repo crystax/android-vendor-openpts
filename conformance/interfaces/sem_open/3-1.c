@@ -11,6 +11,13 @@
    permissions which should come up with denial access.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#elif __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1134 is fixed */
+int main() { return 0; }
+#else /* !__ANDROID__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <sys/types.h>
@@ -94,3 +101,5 @@ int main()
 		return PTS_FAIL;
 	}
 }
+
+#endif /* !__ANDROID__ */

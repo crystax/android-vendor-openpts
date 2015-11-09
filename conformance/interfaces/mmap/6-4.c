@@ -46,7 +46,10 @@ int main()
   off_t off = 0;
   int prot;
 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_6_4_%d",
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_6_4_%d", tmpdir,
            getpid());
 
   /* Create a tmp file, set the content as 'a' */

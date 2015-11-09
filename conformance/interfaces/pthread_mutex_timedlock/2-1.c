@@ -23,6 +23,12 @@
  *    tried to lock in the thread.
  */
 
+#if __APPLE__
+
+int main() { return 0; }
+
+#else /* !__APPLE__ */
+
 /* Test for CLOCK_REALTIME */
 
 #define _XOPEN_SOURCE 600
@@ -158,3 +164,5 @@ void *f1(void *parm)
   	pthread_exit(0);
   	return (void*)(0);
 }
+
+#endif /* !__APPLE__ */

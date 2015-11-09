@@ -22,6 +22,10 @@
  * Clock CLOCK_REALTIME will be used.
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <time.h>
 #include <signal.h>
 #include <stdio.h>
@@ -113,3 +117,5 @@ int main(int argc, char *argv[])
 	printf("This code should not be executed\n");
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

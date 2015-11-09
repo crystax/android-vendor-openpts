@@ -16,6 +16,10 @@
 #include <sys/wait.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 void handler(int signo)
 {
 	printf("In handler\n");
@@ -87,3 +91,5 @@ int main(int argc, char *argv[])
 	}
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

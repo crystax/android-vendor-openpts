@@ -15,6 +15,10 @@
  * 
  */
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 
 #include <pthread.h>
@@ -54,7 +58,10 @@ int main()
    
   char *ch;
  
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_14_1_%d",
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir) tmpdir = "/tmp";
+
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_mmap_14_1_%d", tmpdir,
            getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,
@@ -142,3 +149,5 @@ int main()
   printf("Test Pass\n");
   return PTS_PASS;
 }
+
+#endif /* !__APPLE__ */

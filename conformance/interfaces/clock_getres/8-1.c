@@ -15,6 +15,10 @@
 #include <time.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define LARGENUM 100000
 int main(int argc, char *argv[])
 {
@@ -54,3 +58,5 @@ int main(int argc, char *argv[])
 	return PTS_UNSUPPORTED;
 #endif
 }
+
+#endif /* !__APPLE__ */

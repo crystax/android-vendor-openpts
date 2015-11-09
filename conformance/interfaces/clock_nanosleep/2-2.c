@@ -24,6 +24,10 @@
 #include <sys/wait.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define SLEEPSEC 30
 
 void handler(int signo)
@@ -104,3 +108,5 @@ int main(int argc, char *argv[])
 
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

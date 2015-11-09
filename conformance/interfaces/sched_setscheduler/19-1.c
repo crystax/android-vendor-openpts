@@ -13,6 +13,11 @@
  *
  * Test is done for all policy defined in the spec into a loop.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -93,3 +98,4 @@ int main(){
 	return result;
 }
 
+#endif /* !__APPLE__ */

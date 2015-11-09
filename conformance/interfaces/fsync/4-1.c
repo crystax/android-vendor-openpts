@@ -24,8 +24,6 @@
 #include <string.h>
 #include <errno.h>
 #include "posixtest.h"
- 
-#define TNAME "fsync/4-1.c"
 
 int main()
 {
@@ -34,14 +32,18 @@ int main()
   int total_size = 1024; 
   int fd;
 
-  snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_fsync_4_1_%d",
-           getpid());
+  const char *tmpdir = getenv("TMPDIR");
+  if (!tmpdir)
+      tmpdir = "/tmp";
+
+  snprintf(tmpfname, sizeof(tmpfname), "%s/pts_fsync_4_1_%d",
+           tmpdir, getpid());
   unlink(tmpfname);
   fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL,
             S_IRUSR | S_IWUSR);
   if (fd == -1)
   {  
-    printf(TNAME " Error at open(): %s\n", 
+    printf("%s: Error at open(): %s\n", tmpfname,
            strerror(errno));    
     exit(PTS_UNRESOLVED);
   }
@@ -52,7 +54,7 @@ int main()
   memset(data, 'a', total_size);
   if (write(fd, data, total_size) != total_size)
   {
-    printf(TNAME "Error at write(): %s\n", 
+    printf("%s: Error at write(): %s\n", tmpfname,
             strerror(errno));    
     free(data);
     exit(PTS_UNRESOLVED);
@@ -61,7 +63,7 @@ int main()
   
   if (fsync(fd) == -1)
   {
-    printf(TNAME "Error at fsync(): %s\n", 
+    printf("%s: Error at fsync(): %s\n", tmpfname,
             strerror(errno));    
     exit(PTS_FAIL);
   }  

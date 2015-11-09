@@ -23,6 +23,10 @@
 #include <stdint.h>
 #include "posixtest.h"
 
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define NUMINVALIDTESTS 8
 
 static int invalid_tests[NUMINVALIDTESTS] = {
@@ -60,3 +64,5 @@ int main(int argc, char *argv[])
 	printf("This code should not be executed.\n");
 	return PTS_UNRESOLVED;
 }
+
+#endif /* !__APPLE__ */

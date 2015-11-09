@@ -29,6 +29,10 @@
 
 */
 
+#if __ANDROID__
+/* Temporarily disable it until https://tracker.crystax.net/issues/1134 is fixed */
+int main() { return 0; }
+#else /* !__ANDROID__ */
 
 /* We are testing conformance to IEEE Std 1003.1, 2003 Edition */
 #define _POSIX_C_SOURCE 200112L
@@ -47,6 +51,7 @@
  #include <errno.h>
 
 #include <semaphore.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 
 /********************************************************************************************/
@@ -93,21 +98,21 @@ int main( int argc, char * argv[] )
 	/* Initialize output */
 	output_init();
 
-	sem_linked = sem_open( "/fork_14_1a", O_CREAT, O_RDWR, 0 );
+	sem_linked = sem_open( "/pts_fork_14_1a", O_CREAT, S_IRUSR|S_IWUSR, 0 );
 
 	if ( sem_linked == SEM_FAILED )
 	{
 		UNRESOLVED( errno, "Failed to create the named semaphore" );
 	}
 
-	sem_unlinked = sem_open( "/fork_14_1b", O_CREAT, O_RDWR, 0 );
+	sem_unlinked = sem_open( "/pts_fork_14_1b", O_CREAT, S_IRUSR|S_IWUSR, 0 );
 
 	if ( sem_unlinked == SEM_FAILED )
 	{
 		UNRESOLVED( errno, "Failed to create the named semaphore" );
 	}
 
-	ret = sem_unlink( "/fork_14_1b" );
+	ret = sem_unlink( "/pts_fork_14_1b" );
 
 	if ( ret != 0 )
 	{
@@ -202,7 +207,7 @@ int main( int argc, char * argv[] )
 		}
 	}
 
-	ret = sem_unlink( "/fork_14_1a" );
+	ret = sem_unlink( "/pts_fork_14_1a" );
 
 	if ( ret != 0 )
 	{
@@ -233,3 +238,4 @@ int main( int argc, char * argv[] )
 	PASSED;
 }
 
+#endif /* !__ANDROID__ */

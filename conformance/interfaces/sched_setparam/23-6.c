@@ -12,6 +12,11 @@
  * does not have permission to set the scheduling parameters for the specified
  * process, or does not have the appropriate privilege to invoke schedparam().
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #define _XOPEN_SOURCE 600
 #include <stdio.h>
 #include <sched.h>
@@ -62,12 +67,14 @@ int main(){
 	param.sched_priority = sched_get_priority_min(SCHED_FIFO);
 	/* Cannot test SCHED_OTHER, on 0 valid as its priority */
 	sched_setscheduler(0, SCHED_FIFO, &param);
+#if !__ANDROID__
 	if (getuid() == 0) {
                 if (set_nonroot() != 0) {
 			printf("Cannot run this test as non-root user\n");	
 			return PTS_UNTESTED;
 		}
         }
+#endif /* !__ANDROID__ */
 
 	if(sched_getparam(0, &param) == -1) {
 		perror("An error occurs when calling sched_getparam()");
@@ -79,8 +86,13 @@ int main(){
 	rc = sched_setparam(0,&param);
 	if (rc != -1 || (rc == -1 && errno != EPERM))
 	{
-		perror("sched_setparam() does not return EPERM\n");
-		return PTS_UNRESOLVED;
+		perror("sched_setparam() does not return EPERM");
+        if (rc == 0)
+            return geteuid() == 0 ? PTS_PASS : PTS_UNRESOLVED;
+#if __gnu_linux__
+        if (errno == EINVAL) return PTS_PASS;
+#endif
+        return PTS_UNRESOLVED;
 	}
 
 	if(sched_getparam(0, &param) != 0){
@@ -96,3 +108,5 @@ int main(){
 		return PTS_FAIL;
 	}
 }
+
+#endif /* !__APPLE__ */

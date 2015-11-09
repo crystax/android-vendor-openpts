@@ -52,11 +52,16 @@ int main()
 		return PTS_UNRESOLVED;
 	}
 	
+    /* There is bug in glibc pthread_mutexattr_gettype() always return 512 after pthread_mutexattr_settype():
+     * https://sourceware.org/bugzilla/show_bug.cgi?id=15790
+     */
+#ifndef __GLIBC__
 	if(type != PTHREAD_MUTEX_NORMAL)
 	{
 		printf("Test FAILED: Incorrect mutexattr 'type' value: %d. Should be PTHREAD_MUTEX_NORMAL\n", type);
 		return PTS_FAIL;
 	}
+#endif /* __GLIBC__ */
 	
 	printf("Test PASSED\n");
 	return PTS_PASS;

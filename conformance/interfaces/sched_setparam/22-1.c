@@ -10,6 +10,11 @@
  *
  * Test that the sched_setparam() function return zero on success.
  */
+
+#if __APPLE__
+int main() { return 0; }
+#else /* !__APPLE__ */
+
 #include <sched.h>
 #include <stdio.h>
 #include <errno.h>
@@ -38,3 +43,4 @@ int main(){
 	}
 }
 
+#endif /* !__APPLE__ */
