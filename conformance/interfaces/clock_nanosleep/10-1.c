@@ -55,11 +55,6 @@ int main(int argc, char *argv[])
 		if (clock_nanosleep(CLOCK_REALTIME, 0, &tssleep, NULL) == EINTR) {
 				return CHILDPASS;
 		} else {
-#if __ANDROID__
-            /* TODO: Remove this block when https://tracker.crystax.net/issues/1131 would be fixed */
-            if (errno == EINTR)
-                return CHILDPASS;
-#endif
 				printf("errno != EINTR: %d (%s)\n", errno, strerror(errno));
 				return CHILDFAIL;
 		}

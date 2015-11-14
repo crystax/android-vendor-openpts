@@ -45,11 +45,6 @@ int main(int argc, char *argv[])
 		printf("sleep %d\n", invalid_tests[i]);
 		if (clock_nanosleep(CLOCK_REALTIME, 0, &tssleep, NULL) != 
 			EINVAL) {
-#if __ANDROID__
-            /* TODO: Remove this block when https://tracker.crystax.net/issues/1131 would be fixed */
-            if (errno == EINVAL)
-                continue;
-#endif
 			printf("errno != EINVAL\n");
 			failure = 1;
 		}

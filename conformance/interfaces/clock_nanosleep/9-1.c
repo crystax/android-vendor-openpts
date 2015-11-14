@@ -40,7 +40,6 @@ int main(int argc, char *argv[])
 	struct timespec tssleep, tsbefore, tsafter, tsremain;
 	int pid;
 	struct sigaction act;
-    int rc;
 
 	if (clock_gettime(CLOCK_REALTIME, &tsbefore) != 0) {
 		perror("clock_gettime() did not return success\n");
@@ -63,12 +62,7 @@ int main(int argc, char *argv[])
 		}
 		tssleep.tv_sec=SLEEPSEC;
 		tssleep.tv_nsec=0;
-        rc = clock_nanosleep(CLOCK_REALTIME, 0, &tssleep, &tsremain);
-#if __ANDROID__
-        /* TODO: Remove this block when https://tracker.crystax.net/issues/1131 would be fixed */
-        if (rc != 0) rc = errno;
-#endif
-		if (rc == EINTR) {
+		if (clock_nanosleep(CLOCK_REALTIME, 0, &tssleep, &tsremain) == EINTR) {
 			if (clock_gettime(CLOCK_REALTIME, &tsafter) != 0) {
 				perror("clock_gettime() failed\n");
 				return CHILDFAIL;

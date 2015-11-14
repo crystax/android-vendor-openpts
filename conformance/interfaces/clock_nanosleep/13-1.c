@@ -32,13 +32,6 @@ int main(int argc, char *argv[])
 		printf("Test PASSED\n");
 		return PTS_PASS;
 	} else {
-#if __ANDROID__
-        /* TODO: Remove this block when https://tracker.crystax.net/issues/1131 would be fixed */
-        if (errno == EINVAL) {
-            printf("Test PASSED\n");
-            return PTS_PASS;
-        }
-#endif
 		printf("errno != EINVAL\n");
 		return PTS_FAIL;
 	}
