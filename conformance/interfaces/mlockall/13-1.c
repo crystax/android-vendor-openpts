@@ -19,9 +19,6 @@
 int main() {
 #if __APPLE__
     return PTS_PASS;
-#elif __ANDROID__
-    /* Temporarily disable it until https://tracker.crystax.net/issues/1137 is fixed */
-    return PTS_PASS;
 #else /* !__ANDROID__ */
 	int result;
 
@@ -37,5 +34,5 @@ int main() {
 		perror("Unexpected error");
 		return PTS_FAIL;
 	}
-#endif /* !__ANDROID__ */
+#endif /* !__APPLE__ */
 }

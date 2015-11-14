@@ -13,12 +13,10 @@
  * This test use msync to check that the page is locked.
  */
 
-#if __gnu_linux__ || __APPLE__
+#if __APPLE__
 int main() { return 0; }
 #elif __ANDROID__
-/* Temporarily disable it until https://tracker.crystax.net/issues/1137 and
- * https://tracker.crystax.net/issues/1132 would be fixed
- */
+/* Temporarily disable it until https://tracker.crystax.net/issues/1132 is fixed */
 int main() { return 0; }
 #else /* !__ANDROID__ */
 
@@ -33,6 +31,9 @@ int main() { return 0; }
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 #include "posixtest.h"
 
 #define BUF_SIZE 8
@@ -43,6 +44,13 @@ int main() {
 	size_t page_size;
 	int result, fd;
 	void *foo;
+    struct rlimit rl;
+
+    if (getrlimit(RLIMIT_MEMLOCK, &rl) == -1) {
+        perror("An error occurs when calling getrlimit()");
+        return PTS_UNRESOLVED;
+    }
+    printf("RLIMIT_MEMLOCK: %lld/%lld\n", (long long)rl.rlim_cur, (long long)rl.rlim_max);
 
 	page_size = sysconf(_SC_PAGESIZE);
 	if(errno) {
@@ -70,6 +78,13 @@ int main() {
 	}	
 
 	if(mlockall(MCL_CURRENT) == -1) {
+#if __gnu_linux__
+        if (errno == ENOMEM && rl.rlim_cur != 0) {
+            printf("We're trying to lock more memory than allowed (%lld)\n", (long long)rl.rlim_cur);
+            return PTS_PASS;
+        }
+#endif /* !__gnu_linux__ */
+
 		if(errno == EPERM){
 			printf("You don't have permission to lock your address space.\nTry to rerun this test as root.\n");
 		} else {
