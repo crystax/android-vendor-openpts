@@ -11,10 +11,7 @@
 
 #if __APPLE__
 int main() { return 0; }
-#elif __ANDROID__
-/* Temporarily disabled it until https://tracker.crystax.net/issues/1129 is fixed */
-int main() { return 0; }
-#else /* !__ANDROID__ */
+#else /* !__APPLE__ */
 
 #define _XOPEN_SOURCE 600
 
@@ -59,6 +56,10 @@ int main(int argc, char *argv[])
 	if (clock_settime(clockid_1, &tp1) != 0) {
         if (geteuid() != 0 && errno == EPERM)
             return PTS_PASS;
+#if __ANDROID__
+        if (errno == EPERM)
+            return PTS_PASS;
+#endif /* !__ANDROID__ */
         fprintf(stderr, "clock_settime() failed: %s\n", strerror(errno));
 		return PTS_FAIL;
 	}
@@ -77,4 +78,4 @@ int main(int argc, char *argv[])
 	
 #endif
 }
-#endif /* !__ANDROID__ */
+#endif /* !__APPLE__ */
