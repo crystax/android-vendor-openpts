@@ -9,11 +9,6 @@
  
 */
 
-#if __ANDROID__
-/* Temporarily disable it until https://tracker.crystax.net/issues/1128 is fixed */
-int main() { return 0; }
-#else /* !__ANDROID__ */
-
 #define _XOPEN_SOURCE 600
 
 #include <stdio.h>
@@ -24,6 +19,7 @@ int main()
 {
 
 	sigset_t set;
+    sigemptyset(&set);
 	sigaddset (&set, SIGABRT);
 
 	if (pthread_sigmask(SIG_SETMASK, &set, NULL) != 0) {
@@ -33,5 +29,3 @@ int main()
 	printf("pthread_sigmask passed\n");
 	return PTS_PASS;
 }
-
-#endif /* !__ANDROID__ */
