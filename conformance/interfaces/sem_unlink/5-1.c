@@ -126,7 +126,7 @@ int main( int argc, char * argv[] )
 
 		if ( sem_name == NULL )
 		{
-			UNRESOLVED( errno, "Failed to allocate space for the semaphore name" );
+			UNRESOLVED( errno, " (1) Failed to allocate space for the semaphore name" );
 		}
 
 		/* the space was allocated */
@@ -145,24 +145,19 @@ int main( int argc, char * argv[] )
 			error = errno;
 			free( sem_name );
 
-			if ( ret == 0 )
+			if ( ret != 0 )
 			{
-				FAILED( "The function did not return ENAMETOOLONG as expected" );
-			}
-			else
-			{
-				output( "Error was %d: %s\n", error, strerror( error ) );
-				FAILED( "Unable to unlink a semaphore which we just created" );
+				output( " (1) Error was %d: %s\n", error, strerror( error ) );
+				FAILED( " (1) Unable to unlink a semaphore which we just created" );
 			}
 		}
 
-#if VERBOSE > 0
 		else
 		{
-			output( "Creation of the semaphore failed with error %d: %s\n", errno, strerror( errno ) );
-		}
-
+#if VERBOSE > 0
+			output( " (1) Creation of the semaphore failed with error %d: %s\n", errno, strerror( errno ) );
 #endif
+		}
 
 	}
 
@@ -181,7 +176,7 @@ int main( int argc, char * argv[] )
 
 		if ( sem_name == NULL )
 		{
-			UNRESOLVED( errno, "Failed to allocate space for the semaphore name" );
+			UNRESOLVED( errno, " (2) Failed to allocate space for the semaphore name" );
 		}
 
 		/* the space was allocated */
@@ -200,24 +195,19 @@ int main( int argc, char * argv[] )
 			error = errno;
 			free( sem_name );
 
-			if ( ret == 0 )
+			if ( ret != 0 )
 			{
-				FAILED( "The function did not return ENAMETOOLONG as expected" );
-			}
-			else
-			{
-				output( "Error was %d: %s\n", error, strerror( error ) );
-				FAILED( "Unable to unlink a semaphore which we just created" );
+				output( " (2) Error was %d: %s\n", error, strerror( error ) );
+				FAILED( " (2) Unable to unlink a semaphore which we just created" );
 			}
 		}
 
-#if VERBOSE > 0
 		else
 		{
-			output( "Creation of the semaphore failed with error %d: %s\n", errno, strerror( errno ) );
-		}
-
+#if VERBOSE > 0
+			output( " (2) Creation of the semaphore failed with error %d: %s\n", errno, strerror( errno ) );
 #endif
+		}
 
 	}
 
