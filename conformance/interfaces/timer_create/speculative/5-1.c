@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
 	// Test can validly fail if timer did not last for correct amount
 	// of time, but nanosleep() was interrupted.
-	if (abs(tsleft.tv_sec-SLEEPDELTA) > ACCEPTABLEDELTA) {
+	if (labs(tsleft.tv_sec-SLEEPDELTA) > ACCEPTABLEDELTA) {
 		printf("Timer did not last for correct amount of time\n");
 		printf("timer: %d != correct %d\n", 
 				(int) ts.tv_sec- (int) tsleft.tv_sec,

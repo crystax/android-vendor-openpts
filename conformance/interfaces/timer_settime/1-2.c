@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 			failure = 1;
 		}
 
-		if ( abs(tsleft.tv_sec-SLEEPDELTA) > ACCEPTABLEDELTA) {
+		if ( labs(tsleft.tv_sec-SLEEPDELTA) > ACCEPTABLEDELTA) {
 			printf("Timer did not last correct amount of time\n");
 			failure = 1;
 		}

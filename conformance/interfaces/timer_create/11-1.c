@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
         return PTS_PASS;
 	}
 
-	if ( abs(tsleft.tv_sec-SLEEPDELTA) <= ACCEPTABLEDELTA) {
+	if ( labs(tsleft.tv_sec-SLEEPDELTA) <= ACCEPTABLEDELTA) {
 		printf("Test PASSED");
 		return PTS_PASS;
 	} else {
