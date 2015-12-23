@@ -121,10 +121,6 @@ int main() { return 0; }
 
 sem_t semsync[2]; /* These semaphores will only be used in child process! */
 
-#if defined(__GNUC__)
-#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-#endif
-
 /* The overflow function is used to test the stack overflow */
 void * overflow(void * arg)
 {
@@ -132,7 +128,7 @@ void * overflow(void * arg)
 	void * pad[50]; /* We want to consume the stack quickly */
 	long stacksize = sysconf(_SC_THREAD_STACK_MIN); /* make sure we touch the current stack memory */
 	
-	pad[1]=NULL; /* so compiler stops complaining about unused variables */
+	(void)pad; pad[1] = NULL; /* so compiler stops complaining about unused variables */
 	int ret = 0;
 	
 	if (arg == NULL)
