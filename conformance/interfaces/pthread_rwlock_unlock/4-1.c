@@ -28,8 +28,16 @@
 #include <string.h>
 #include "posixtest.h"
 
+/* Starting from glibc-2.21 pthread_rwlock_unlock crashes if we pass wrong rwlock */
+#if defined(__GLIBC__) && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 21))
+#define SKIPTEST 1
+#else
+#define SKIPTEST 0
+#endif
+
 int main()
 {
+#if !SKIPTEST
 	static pthread_rwlock_t rwlock;
 	int rc;
 	
@@ -47,5 +55,6 @@ int main()
 	}
 	
 	printf("Test PASSED: Note*: Returned 0 instead of EINVAL or EPERM, but standard specified _may_ fail.\n");
+#endif /* !SKIPTEST */
 	return PTS_PASS;
 }
